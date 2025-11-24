@@ -1,13 +1,12 @@
-
 import os
-import json
+# import json
 from flask import Flask, render_template, request, redirect, url_for, send_file, flash
 from flask_sqlalchemy import SQLAlchemy
 from markupsafe import Markup
 from io import BytesIO
-import tempfile
+# import tempfile
 
-# imports (pdfkit and OpenAI)
+# imports extra
 try:
     import pdfkit
 except Exception:
@@ -18,7 +17,7 @@ try:
 except Exception:
     OpenAI = None
 
-# ---------- Config ----------
+
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 STATIC_DIR = os.path.join(BASE_DIR, "static")
@@ -26,15 +25,15 @@ CSS_FILE = os.path.join(STATIC_DIR, "style.css")
 DB_FILE = os.path.join(BASE_DIR, "resumes.db")
 
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", None)
-OPENAI_MODEL = os.environ.get("OPENAI_MODEL", "gpt-4o-mini")  # chosen default
-WKHTMLTOPDF_PATH = os.environ.get("WKHTMLTOPDF_PATH", None)  # optional path to wkhtmltopdf executable
+OPENAI_MODEL = os.environ.get("OPENAI_MODEL", "gpt-4o-mini")
+WKHTMLTOPDF_PATH = os.environ.get("WKHTMLTOPDF_PATH", None) 
 WKHTMLTOPDF_PATH=r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"
 
-# ---------- Ensure folders and files exist (write templates + css) ----------
+
 os.makedirs(TEMPLATES_DIR, exist_ok=True)
 os.makedirs(STATIC_DIR, exist_ok=True)
 
-# CSS (simple, adjustable)
+# CSS 
 CSS_CONTENT = """
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 
@@ -115,7 +114,7 @@ if write_css:
     with open(CSS_FILE, "w", encoding="utf-8") as f:
         f.write(CSS_CONTENT)
 
-# Template: base.html
+# base.html
 BASE_HTML = """<!doctype html>
 <html>
 <head>
@@ -155,7 +154,7 @@ BASE_HTML = """<!doctype html>
 </html>
 """
 
-# Template: form.html
+# form.html
 FORM_HTML = """{% extends "base.html" %}
 {% block content %}
 <div class="form-card">
@@ -218,7 +217,7 @@ FORM_HTML = """{% extends "base.html" %}
 {% endblock %}
 """
 
-# Template: preview wrapper (renders chosen template)
+# Preview 
 PREVIEW_HTML = """{% extends "base.html" %}
 {% block content %}
 <div class="preview-card">
@@ -239,7 +238,7 @@ PREVIEW_HTML = """{% extends "base.html" %}
 {% endblock %}
 """
 
-# Template bodies: three resume templates (create them as separate files included by preview)
+# Templates
 TEMPLATE_1 = """<div class="resume">
   <h1 style="margin:0; font-size:26px;">{{ data.full_name }}</h1>
   <div style="color:#374151; margin-top:6px;">{{ data.title }} {% if data.profile_link %} • <a href="{{ data.profile_link }}">{{ data.profile_link }}</a>{% endif %}</div>
@@ -330,7 +329,7 @@ TEMPLATE_3 = """<div class="resume" style="font-family:Segoe UI, Roboto, Arial;"
 </div>
 """
 
-# Files map
+# map the files
 WRITE_FILES = {
     os.path.join(TEMPLATES_DIR, "base.html"): BASE_HTML,
     os.path.join(TEMPLATES_DIR, "form.html"): FORM_HTML,
@@ -353,7 +352,7 @@ for path, contents in WRITE_FILES.items():
         with open(path, "w", encoding="utf-8") as f:
             f.write(contents)
 
-# ---------- Flask app ----------
+#Flask app
 app = Flask(__name__, template_folder=TEMPLATES_DIR, static_folder=STATIC_DIR)
 app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_FILE}"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -361,7 +360,7 @@ app.secret_key = os.environ.get("FLASK_SECRET", "dev-secret-change-this")
 
 db = SQLAlchemy(app)
 
-# OpenAI client (optional)
+
 openai_client = None
 if OPENAI_API_KEY and OpenAI is not None:
     try:
@@ -385,7 +384,7 @@ class Resume(db.Model):
     skills = db.Column(db.Text)
     template = db.Column(db.String(80), default="template1")
 
-    def to_dict(self):
+    def to_dictionary(self):
         return {
             "id": self.id,
             "full_name": self.full_name,
@@ -401,16 +400,17 @@ class Resume(db.Model):
             "template": self.template or "template1",
         }
 
-# Create DB if missing
+
 with app.app_context():
     db.create_all()
 
-# ---------- Helpers ----------
+
 @app.template_filter("nl2br")
 def nl2br(value):
     if not value:
         return ""
     return Markup("<br>".join(Markup.escape(str(value)).splitlines()))
+
 
 def ai_enhance_text(prompt_text: str, role_hint: str = "You are a professional resume writer."):
     """Use OpenAI if available, else fallback simple cleanup."""
@@ -431,7 +431,7 @@ def ai_enhance_text(prompt_text: str, role_hint: str = "You are a professional r
         except Exception as e:
             print("OpenAI call failed:", e)
 
-    # Fallback: cleanup + sentence capitalization
+    # cleanup + sentence capitalization
     s = " ".join(prompt_text.split())
     if not s:
         return ""
@@ -440,7 +440,6 @@ def ai_enhance_text(prompt_text: str, role_hint: str = "You are a professional r
     return s[0].upper() + s[1:]
 
 
-# PDF config (pdfkit)
 pdf_config = None
 if pdfkit and WKHTMLTOPDF_PATH:
     try:
@@ -449,7 +448,7 @@ if pdfkit and WKHTMLTOPDF_PATH:
         print("pdfkit configuration error:", e)
         pdf_config = None
 
-# ---------- Routes ----------
+# FLASK Routes 
 @app.route("/", methods=["GET"])
 def index():
     return render_template("form.html", title="Create Resume")
@@ -461,7 +460,7 @@ def submit_form():
     chosen_template = request.form.get("template", "template1")
     use_ai = request.form.get("enhance_ai", "") == "on"
 
-    # AI enhancement
+    # AI 
     if use_ai:
         if data["summary"]:
             prompt = f"Rewrite the following professional summary to be concise, clear and resume-ready:\n\n{data['summary']}"
@@ -496,22 +495,17 @@ def submit_form():
 @app.route("/resume/<int:resume_id>", methods=["GET"])
 def preview_resume(resume_id):
     r = Resume.query.get_or_404(resume_id)
-    data = r.to_dict()
-    # decide which template include file to use inside preview.html
+    data = r.to_dictionary()
     template_file = f"resume_{r.template}.html"
-    # ensure include file exists (we wrote them during startup)
-    # preview.html will include the template file path (relative in templates folder)
     return render_template("preview.html", data=data, template_file=template_file, title="Preview")
 
 @app.route("/download/<int:resume_id>", methods=["POST"])
 def download_pdf(resume_id):
     r = Resume.query.get_or_404(resume_id)
-    data = r.to_dict()
-    # Render the specific template directly (we render the template body files to produce PDF)
+    data = r.to_dictionary()
     template_name = f"resume_{r.template}.html"
-    # Use render_template_string wrapper via render_template to get HTML
     html = render_template(template_name, data=data, for_pdf=True)
-    # We want a clean PDF page (wrap in minimal HTML head linking CSS)
+    # wrap in minimal HTML head linking CSS
     full_html = (
         "<html><head><meta charset='utf-8'><style>"
         + CSS_CONTENT
@@ -528,18 +522,14 @@ def download_pdf(resume_id):
             return send_file(BytesIO(pdf_bytes), mimetype="application/pdf", as_attachment=True, download_name=f"{r.full_name}_resume.pdf")
         except Exception as e:
             print("pdfkit failed:", e)
-            flash("Server PDF generation failed. You can use your browser Print -> Save as PDF.")
-            # fallback to HTML preview page
+            flash("Use your browser Print -> Save as PDF.")
+            # HTML preview page
             return render_template("preview.html", data=data, template_file=template_name, title="Preview")
     else:
-        flash("Server cannot auto-generate PDF (pdfkit/wkhtmltopdf missing). Please use browser Print -> Save as PDF.")
+        flash("Use browser Print -> Save as PDF.")
         return render_template("preview.html", data=data, template_file=template_name, title="Preview")
 
-# ---------- create small include files for templates (resume_template1/2/3) ----------
-# The files resume_template1.html, resume_template2.html, resume_template3.html were written above.
-# We already created them in WRITE_FILES loop.
-
-# ---------- Run ----------
+# Run 
 if __name__ == "__main__":
     print("Starting Resume Builder app...")
     if OPENAI_API_KEY:
