@@ -1,10 +1,8 @@
 import os
-# import json
 from flask import Flask, render_template, request, redirect, url_for, send_file, flash
 from flask_sqlalchemy import SQLAlchemy
 from markupsafe import Markup
 from io import BytesIO
-# import tempfile
 
 # imports extra
 try:
