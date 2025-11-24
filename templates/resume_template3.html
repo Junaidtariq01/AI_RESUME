@@ -1,0 +1,24 @@
+<div class="resume" style="font-family:Segoe UI, Roboto, Arial;">
+  <div style="display:flex; justify-content:space-between; align-items:center;">
+    <div>
+      <h1 style="margin:0;">{{ data.full_name }}</h1>
+      <div style="color:#374151;">{{ data.title }}</div>
+    </div>
+    <div style="text-align:right; color:#6b7280;">
+      {% if data.email %}{{ data.email }}<br>{% endif %}
+      {% if data.phone %}{{ data.phone }}<br>{% endif %}
+      {% if data.profile_link %}<a href="{{ data.profile_link }}">{{ data.profile_link }}</a>{% endif %}
+    </div>
+  </div>
+  {% if data.summary %}
+    <h2 style="margin-top:12px;">Summary</h2>
+    <p>{{ data.summary | nl2br }}</p>
+  {% endif %}
+  <h2>Experience</h2>
+  {% for line in data.experience.splitlines() %}
+    <p>&#9679; {{ line }}</p>
+  {% endfor %}
+  <div style="margin-top:10px;">
+    <strong>Skills:</strong> {{ data.skills }}
+  </div>
+</div>

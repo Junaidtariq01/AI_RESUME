@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>{{ title or 'Resume Builder' }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      
+      <div class="headm">
+        <img src="{{ url_for('static', filename='p.png') }}"alt="Resume" width="100" height="auto">
+        <div class="head">
+        <h1 class="app">Resume Builder </h1>
+      </div>
+    </div>
+    <div class="headb">
+      <p> Enter the details to generate a Resume </p>
+      <span class="a">
+        <a href="{{ url_for('index') }}" class="pill">Create new</a>
+      </span>
+    </div>
+
+    </div>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+          {% for m in messages %}<li>{{ m }}</li>{% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </div>
+</body>
+</html>

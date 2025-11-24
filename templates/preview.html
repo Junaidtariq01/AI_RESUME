@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="preview-card">
+  <h2>Preview — {{ data.full_name }}</h2>
+  <div>
+    <!-- include the selected template body -->
+    {% include template_file %}
+  </div>
+
+  <form method="post" action="{{ url_for('download_pdf', resume_id=data.id) }}">
+    <!-- include hidden fields so download uses same data -->
+    <input type="hidden" name="resume_id" value="{{ data.id }}">
+    <button class="button" type="submit">Download as PDF</button>
+  </form>
+
+  <p class="small">You can come back to this page to re-download the resume.</p>
+</div>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="form-card">
+  <form method="post" action="{{ url_for('submit_form') }}">
+    <div class="row">
+      <div class="col">
+        <label>Full Name</label>
+        <input required name="full_name" type="text" placeholder="Name">
+      </div>
+      <div class="col">
+        <label>Job Title</label>
+        <input name="title" type="text" placeholder="Software Engineer">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <label>Email</label>
+        <input name="email" type="email" placeholder="you@example.com">
+      </div>
+      <div class="col">
+        <label>Phone</label>
+        <input name="phone" type="text" placeholder="+91-6006868686">
+      </div>
+    </div>
+
+    <label>LinkedIn / Portfolio </label>
+    <input name="profile_link" type="text" placeholder="https://www.linkedin.com">
+
+    <label>Professional Summary</label>
+    <textarea name="summary" placeholder="Short paragraph about youself"></textarea>
+
+    <label>Experience (paste each job, or bullets )</label>
+    <textarea name="experience" placeholder="Company — Role — Achievements"></textarea>
+
+    <label>Education</label>
+    <textarea name="education"></textarea>
+
+    <label>Projects (optional)</label>
+    <textarea name="projects"></textarea>
+
+    <label>Skills (comma separated)</label>
+    <input name="skills" type="text" placeholder="Python, Flask, SQL, ...">
+
+    <label>Select Template</label>
+    <select name="template">
+      <option value="template1">Professional Modern</option>
+      <option value="template2">Two-Column Elegant</option>
+      <option value="template3">Tech Developer</option>
+    </select>
+
+    <label style="margin-top:12px;"><input type="checkbox" name="enhance_ai"> Use AI to enhance text</label>
+
+    <div style="margin-top:14px;">
+      <button class="button" type="submit">Preview Resume</button>
+    </div>
+  </form>
+  <p class="small">After preview you can download PDF.</p>
+</div>
+{% endblock %}

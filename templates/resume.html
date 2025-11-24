@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>{{ data.full_name }} — Resume</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    /* PDF-friendly overrides: keep fonts simple */
+    body { font-family: Arial, sans-serif; color: #111; }
+    .resume { background: white; padding: 24px; border-radius: 6px; max-width: 800px; margin: 18px auto; }
+    h1 { margin: 0; font-size: 26px; }
+    h2 { margin-top: 18px; font-size: 16px; color: #333; }
+    .meta { color: #555; margin-top: 4px; }
+    ul { margin: 6px 0 12px 18px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="resume">
+      <h1>{{ data.full_name }}</h1>
+      <div class="meta">{{ data.title }}{% if data.email %} • {{ data.email }}{% endif %}{% if data.phone %} • {{ data.phone }}{% endif %}</div>
+
+      {% if data.summary_enhanced %}
+        <h2>Summary</h2>
+        <p>{{ data.summary_enhanced | nl2br }}</p>
+      {% elif data.summary %}
+        <h2>Summary</h2>
+        <p>{{ data.summary | nl2br }}</p>
+      {% endif %}
+
+      {% if data.experience_enhanced %}
+        <h2>Experience</h2>
+        {% for line in data.experience_enhanced.splitlines() %}
+          <p>&#9679; {{ line }}</p>
+        {% endfor %}
+      {% elif data.experience %}
+        <h2>Experience</h2>
+        {% for line in data.experience.splitlines() %}
+          <p>&#9679; {{ line }}</p>
+        {% endfor %}
+      {% endif %}
+
+      {% if data.education %}
+        <h2>Education</h2>
+        <p>{{ data.education | nl2br }}</p>
+      {% endif %}
+
+      {% if data.skills %}
+        <h2>Skills</h2>
+        <p>{{ data.skills }}</p>
+      {% endif %}
+    </div>
+
+    {% if not for_pdf %}
+    <form method="post" action="{{ url_for('download_pdf') }}">
+      <!-- re-send the fields so server can render PDF the same way -->
+      <input type="hidden" name="full_name" value="{{ data.full_name }}">
+      <input type="hidden" name="title" value="{{ data.title }}">
+      <input type="hidden" name="email" value="{{ data.email }}">
+      <input type="hidden" name="phone" value="{{ data.phone }}">
+      <input type="hidden" name="summary_enhanced" value="{{ data.summary_enhanced }}">
+      <input type="hidden" name="experience_enhanced" value="{{ data.experience_enhanced }}">
+      <input type="hidden" name="education" value="{{ data.education }}">
+      <input type="hidden" name="skills" value="{{ data.skills }}">
+      <button type="submit">Download as PDF</button>
+    </form>
+    {% else %}
+      <!-- If rendering for PDF, no buttons -->
+    {% endif %}
+  </div>
+</body>
+</html>

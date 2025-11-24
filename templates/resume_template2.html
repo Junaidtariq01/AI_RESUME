@@ -1,0 +1,34 @@
+<div style="display:flex; gap:20px;">
+  <div style="flex:2;">
+    <h1 style="margin:0;">{{ data.full_name }}</h1>
+    <div style="color:#374151;">{{ data.title }}</div>
+    {% if data.summary %}
+      <h2 style="margin-top:12px;">Summary</h2>
+      <p>{{ data.summary | nl2br }}</p>
+    {% endif %}
+    {% if data.experience %}
+      <h2>Experience</h2>
+      {% for line in data.experience.splitlines() %}
+        <p>&#9679; {{ line }}</p>
+      {% endfor %}
+    {% endif %}
+    {% if data.projects %}
+      <h2>Projects</h2>
+      <p>{{ data.projects | nl2br }}</p>
+    {% endif %}
+  </div>
+  <div style="flex:1; background:#f8fafc; padding:12px; border-radius:8px;">
+    {% if data.profile_link %}
+      <h3>Profile</h3>
+      <p><a href="{{ data.profile_link }}">{{ data.profile_link }}</a></p>
+    {% endif %}
+    {% if data.education %}
+      <h3>Education</h3>
+      <p>{{ data.education | nl2br }}</p>
+    {% endif %}
+    {% if data.skills %}
+      <h3>Skills</h3>
+      <p>{{ data.skills }}</p>
+    {% endif %}
+  </div>
+</div>

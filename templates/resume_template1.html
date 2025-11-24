@@ -1,0 +1,26 @@
+<div class="resume">
+  <h1 style="margin:0; font-size:26px;">{{ data.full_name }}</h1>
+  <div style="color:#374151; margin-top:6px;">{{ data.title }} {% if data.profile_link %} • <a href="{{ data.profile_link }}">{{ data.profile_link }}</a>{% endif %}</div>
+  {% if data.summary %}
+    <h2 style="margin-top:14px;">Summary</h2>
+    <p>{{ data.summary | nl2br }}</p>
+  {% endif %}
+  {% if data.experience %}
+    <h2>Experience</h2>
+    {% for line in data.experience.splitlines() %}
+      <p>&#9679; {{ line }}</p>
+    {% endfor %}
+  {% endif %}
+  {% if data.education %}
+    <h2>Education</h2>
+    <p>{{ data.education | nl2br }}</p>
+  {% endif %}
+  {% if data.projects %}
+    <h2>Projects</h2>
+    <p>{{ data.projects | nl2br }}</p>
+  {% endif %}
+  {% if data.skills %}
+    <h2>Skills</h2>
+    <p>{{ data.skills }}</p>
+  {% endif %}
+</div>
