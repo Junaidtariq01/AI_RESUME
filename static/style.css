@@ -1,63 +1,37 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
-
 *{
     font-family: "Outfit", sans-serif;
 }
 body { font-family: Arial, Helvetica, sans-serif; background:#f6f7fb; color:#111; margin:0; padding:0; }
-
-
 .container { max-width:960px; margin:30px auto; padding:18px; }
-
 .app{display:flex;justify-content: center; align-items:center; }
-
-/* .header { display:flex;justify-content: center; align-items:center; margin-bottom:18px; } */
-
 .header{ padding: 10px; border-radius: 10px; margin-bottom: -10px;}
-
 .a{display: flex;justify-content: end; margin-bottom: 10px;}
-
 .head{display:flex; flex-direction:column; justify-content: center; align-items:center;}
-
 .app { margin:10px; font-size:35px; color:#100303; }
-
 .headm{
   display: flex; justify-content:center; align-items: center;
 }
-
 .headb p {font-weight: 500; }
-
 .headb{margin-top: 25px;
   display: flex; justify-content: space-between;
 }
-
-
 .form-card, .preview-card { background:white; border-radius:8px; padding:18px; box-shadow:0 4px 12px rgba(15,23,42,0.06); }
-
 label { display:block; margin-top:10px; font-weight:600; }
-
 input[type="text"], input[type="email"], textarea, select {
   width:100%; padding:10px; margin-top:6px; border:1px solid #e6e9ef; border-radius:6px; box-sizing:border-box;
 }
-
 textarea { min-height:100px; resize:vertical; }
-
 .row { display:flex; gap:12px; }
-
 .col { flex:1; }
-
 .button { background:#2563eb; color:#fff; padding:10px 14px; border-radius:6px; border:none; cursor:pointer; font-weight:600; }
-
 .small { color:#6b7280; font-size:13px; margin-top:10px; }
-
 .template-pills { display:flex; gap:8px; margin-top:8px; }
-
 .pill { padding:8px 10px; border:1px solid #e6e9ef; border-radius:999px; cursor:pointer; }
-
 .pill:hover{background:#2563eb; color: #fff;}
-
 .pill{text-decoration: none;}
-
 .download-btn { display:inline-block; margin-top:12px; background:#059669; padding:8px 12px; color:#fff; border-radius:6px; text-decoration:none; }
-
+.error { color: #dc2626; background: #fee2e2; padding: 10px; border-radius: 6px; margin-bottom: 10px; }
+.info { color: #059669; background: #d1fae5; padding: 8px; border-radius: 6px; margin-top: 6px; font-size: 13px; }
 @media (max-width:800px){ .row { flex-direction:column; } .container { padding:12px; } }
