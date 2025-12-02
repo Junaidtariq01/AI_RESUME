@@ -5,52 +5,49 @@
     <div class="row">
       <div class="col">
         <label>Full Name</label>
-        <input required name="full_name" type="text" placeholder="Name">
+        <input required name="full_name" type="text" placeholder="Name" value="{{ form_data.full_name or '' }}">
       </div>
       <div class="col">
         <label>Job Title</label>
-        <input name="title" type="text" placeholder="Software Engineer">
+        <input name="title" type="text" placeholder="Software Engineer" value="{{ form_data.title or '' }}">
       </div>
     </div>
-
     <div class="row">
       <div class="col">
         <label>Email</label>
-        <input name="email" type="email" placeholder="you@example.com">
+        <input name="email" type="email" placeholder="you@example.com" value="{{ form_data.email or '' }}">
       </div>
       <div class="col">
-        <label>Phone</label>
-        <input name="phone" type="text" placeholder="+91-6006868686">
+        <label>Phone (at least 10 digits)</label>
+        <input name="phone" type="text" placeholder="+91-6006868686" value="{{ form_data.phone or '' }}">
       </div>
     </div>
-
-    <label>LinkedIn / Portfolio </label>
-    <input name="profile_link" type="text" placeholder="https://www.linkedin.com">
-
-    <label>Professional Summary </label>
-    <textarea name="summary" placeholder="Short paragraph about youself"></textarea>
-
-    <label>Experience (paste each job, or bullets )</label>
-    <textarea name="experience" placeholder="Company — Role — Achievements"></textarea>
-
+    <label>LinkedIn / Portfolio URL</label>
+    <input name="profile_link" type="text" placeholder="https://www.linkedin.com" value="{{ form_data.profile_link or '' }}">
+    <label>Professional Summary (minimum 30 words)</label>
+    <textarea name="summary" placeholder="Short paragraph about yourself">{{ form_data.summary or '' }}</textarea>
+    <label>Experience (paste each job, or bullets)</label>
+    <textarea name="experience" placeholder="Company — Role — Achievements">{{ form_data.experience or '' }}</textarea>
     <label>Education</label>
-    <textarea name="education"></textarea>
-
-    <label>Projects</label>
-    <textarea name="projects"></textarea>
-
+    <textarea name="education">{{ form_data.education or '' }}</textarea>
+    <label>Projects (optional)</label>
+    <textarea name="projects">{{ form_data.projects or '' }}</textarea>
     <label>Skills (comma separated)</label>
-    <input name="skills" type="text" placeholder="Python, Flask, SQL, ...">
-
+    <input name="skills" type="text" placeholder="Python, Flask, SQL, ..." value="{{ form_data.skills or '' }}">
     <label>Select Template</label>
     <select name="template">
-      <option value="template1">Professional Template</option>
-      <option value="template2">Two-Column Template</option>
-      <option value="template3">Techie Template</option>
+      <option value="template1" {% if form_data.template == 'template1' %}selected{% endif %}>Professional Modern</option>
+      <option value="template2" {% if form_data.template == 'template2' %}selected{% endif %}>Two-Column Elegant</option>
+      <option value="template3" {% if form_data.template == 'template3' %}selected{% endif %}>Tech Developer</option>
     </select>
+    
+    <label style="margin-top:12px;">
+      <input type="checkbox" name="enhance_ai" {% if form_data.enhance_ai %}checked{% endif %}>
+      Enhance summary with AI (Gemini)
+    </label>
+    <p class="info">✨ AI will rewrite your summary to be more professional and ATS-friendly</p>
 
-    <label style="margin-top:12px;"><input type="checkbox" name="enhance_ai"> Use AI to enhance text</label>
-
+    
     <div style="margin-top:14px;">
       <button class="button" type="submit">Preview Resume</button>
     </div>
