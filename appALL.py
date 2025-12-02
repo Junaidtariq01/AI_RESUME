@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from markupsafe import Markup
 from io import BytesIO
 
-# imports extra
+# import extra files
 try:
     import pdfkit
 except Exception:
@@ -15,7 +15,7 @@ try:
 except Exception:
     OpenAI = None
 
-
+# 9541502580
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 STATIC_DIR = os.path.join(BASE_DIR, "static")
@@ -182,7 +182,7 @@ FORM_HTML = """{% extends "base.html" %}
     <label>LinkedIn / Portfolio </label>
     <input name="profile_link" type="text" placeholder="https://www.linkedin.com">
 
-    <label>Professional Summary</label>
+    <label>Professional Summary </label>
     <textarea name="summary" placeholder="Short paragraph about youself"></textarea>
 
     <label>Experience (paste each job, or bullets )</label>
@@ -191,7 +191,7 @@ FORM_HTML = """{% extends "base.html" %}
     <label>Education</label>
     <textarea name="education"></textarea>
 
-    <label>Projects (optional)</label>
+    <label>Projects</label>
     <textarea name="projects"></textarea>
 
     <label>Skills (comma separated)</label>
