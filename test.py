@@ -1,1 +1,0 @@
-x = int(input("Enter the no.pf terms"))
